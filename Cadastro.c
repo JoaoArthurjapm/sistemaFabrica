@@ -6,7 +6,7 @@
 #define MAX_FABRICANTES 5
 #define MAX_PRODUTOS 50
 
-// Definiï¿½ï¿½o da struct Fabricante
+// Definição da struct Fabricante
 struct Fabricante
 {
     char marca[100];
@@ -15,7 +15,7 @@ struct Fabricante
     char UF[3];
 };
 
-// Definiï¿½ï¿½o da struct Produto
+// Definição da struct Produto
 struct Produto
 {
     char descricao[100];
@@ -27,7 +27,7 @@ struct Produto
     struct Fabricante fabricante;
 };
 
-// Funï¿½ï¿½o para obter informaï¿½ï¿½es do fabricante
+// Função para obter informações do fabricante
 struct Fabricante obterFabricante(int fabricanteNum)
 {
     struct Fabricante fabricante;
@@ -47,12 +47,13 @@ struct Fabricante obterFabricante(int fabricanteNum)
     return fabricante;
 }
 
-// Funï¿½ï¿½o para obter informaï¿½ï¿½es do produto
+// Função para obter informações do produto
 struct Produto obterProduto(int produtoNum, const struct Fabricante *fabricantes, int numFabricantes)
 {
     struct Produto produto;
+    fflush(stdin);
     printf("\nProduto %d:\n", produtoNum);
-    printf("Descriï¿½ï¿½o: ");
+    printf("Descrição: ");
     fflush(stdin);
     fgets(produto.descricao, sizeof(produto.descricao), stdin);
     printf("Peso: ");
@@ -70,9 +71,9 @@ struct Produto obterProduto(int produtoNum, const struct Fabricante *fabricantes
     produto.valorLucro = produto.valorVenda - produto.valorCompra;
     produto.percentualLucro = (produto.valorLucro / produto.valorCompra) * 100;
 
-    // Obter o nï¿½mero do fabricante do produto
+    // Obter o número do fabricante do produto
     int numFabricante;
-    printf("Nï¿½mero do Fabricante (1-%d): ", numFabricantes);
+    printf("Número do Fabricante (1-%d): ", numFabricantes);
     scanf("%d", &numFabricante);
 
     if (numFabricante < 1)
@@ -90,13 +91,13 @@ struct Produto obterProduto(int produtoNum, const struct Fabricante *fabricantes
     return produto;
 }
 
-// Funï¿½ï¿½o para exibir as informaï¿½ï¿½es dos produtos em formato de tabela
+// Função para exibir as Informações dos produtos em formato de tabela
 void exibirProdutos(const struct Produto *produtos, int numProdutos)
 {
     int i;
-    printf("\nInformaï¿½ï¿½es dos produtos:\n");
+    printf("\nInformações dos produtos:\n");
     printf("+------+-------------------------+--------+--------------+--------------+---------+---------+\n");
-    printf("|  Nï¿½  |       Descriï¿½ï¿½o         |  Peso  | Valor Compra | Valor Venda  |  Lucro  |  %% Lucro |\n");
+    printf("|  Nï¿½  |       Descrição       |  Peso  | Valor Compra | Valor Venda  |  Lucro  |  %% Lucro |\n");
     printf("+------+-------------------------+--------+--------------+--------------+---------+---------+\n");
 
     for (i = 0; i < numProdutos; i++)
@@ -125,13 +126,13 @@ void exibirMenu(const struct Produto *produtos, int numProdutos, const struct Fa
         printf("[2] Listar todos os produtos\n");
         printf("[3] Listar os produtos de um determinado estado\n");
         printf("[4] Listar os produtos de uma determinada marca\n");
-        printf("[5] Apresentar o(s) estado(s) onde estï¿½ registrado o produto mais caro\n");
-        printf("[6] Apresentar o(s) fabricante(s) onde estï¿½ registrado o produto mais barato\n");
+        printf("[5] Apresentar o(s) estado(s) onde estão registrado o produto mais caro\n");
+        printf("[6] Apresentar o(s) fabricante(s) onde estão registrado o produto mais barato\n");
         printf("[7] Listar todos os produtos em ordem crescente de valor\n");
         printf("[8] Listar todos os produtos em ordem crescente de maior 'valor do lucro'\n");
         printf("[9] Listar todos os produtos em ordem crescente de maior 'percentual de lucro'\n");
         printf("[0] Sair do programa\n");
-        printf("Escolha uma opï¿½ï¿½o: ");
+        printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
         switch (opcao)
@@ -191,7 +192,7 @@ void exibirMenu(const struct Produto *produtos, int numProdutos, const struct Fa
             break;
 
         case 5:
-            // Apresentar o(s) estado(s) onde estï¿½ registrado o produto mais caro
+            // Apresentar o(s) estado(s) onde estão registrado o produto mais caro
             {
                 float maiorValor = produtos[0].valorVenda;
 
@@ -203,7 +204,7 @@ void exibirMenu(const struct Produto *produtos, int numProdutos, const struct Fa
                     }
                 }
 
-                printf("\nEstado(s) onde estï¿½ registrado o produto mais caro:\n");
+                printf("\nEstado(s) onde estão registrado o produto mais caro:\n");
                 for (i = 0; i < numProdutos; i++)
                 {
                     if (produtos[i].valorVenda == maiorValor)
@@ -227,7 +228,7 @@ void exibirMenu(const struct Produto *produtos, int numProdutos, const struct Fa
                     }
                 }
 
-                printf("\nFabricante(s) onde estï¿½ registrado o produto mais barato:\n");
+                printf("\nFabricante(s) onde estão registrado o produto mais barato:\n");
                 for (i = 0; i < numProdutos; i++)
                 {
                     if (produtos[i].valorVenda == menorValor)
@@ -313,17 +314,68 @@ void exibirMenu(const struct Produto *produtos, int numProdutos, const struct Fa
             }
             break;
 
+        
+        case 'A':
+		case 'a':
+    		// Listar todos os produtos em ordem alfabética crescente A-Z
+    		ordenarProdutosAlfabeticamente(produtos, numProdutos);
+    	break;
+
+		case 'Z':
+		case 'z':
+    		// Listar todas as marcas em ordem alfabética decrescente Z-A
+    		ordenarMarcasAlfabeticamente(fabricantes, numFabricantes);
+    	break;
+
         case 0:
             // Sair do programa
             printf("\nEncerrando o programa...\n");
             break;
-
+            
         default:
-            printf("\nOpï¿½ï¿½o invï¿½lida! Tente novamente.\n");
+            printf("\nOpção inválida! Tente novamente.\n");
             break;
         }
     } while (opcao != 0);
 }
+
+// Função para comparar dois produtos para ordenação alfabética
+int compararProdutos(const void *produto1, const void *produto2)
+{
+    const struct Produto *p1 = (const struct Produto *)produto1;
+    const struct Produto *p2 = (const struct Produto *)produto2;
+    return strcmp(p1->descricao, p2->descricao);
+}
+
+// Função para comparar duas marcas para ordenação alfabética
+int compararMarcas(const void *marca1, const void *marca2)
+{
+    const struct Fabricante *m1 = (const struct Fabricante *)marca1;
+    const struct Fabricante *m2 = (const struct Fabricante *)marca2;
+    return strcmp(m2->marca, m1->marca);
+}
+
+// Função para listar todos os produtos em ordem alfabética crescente A-Z
+void ordenarProdutosAlfabeticamente(struct Produto *produtos, int numProdutos)
+{
+    qsort(produtos, numProdutos, sizeof(struct Produto), compararProdutos);
+    printf("\nProdutos em ordem alfabética crescente A-Z:\n");
+    exibirProdutos(produtos, numProdutos);
+}
+
+// Função para listar todas as marcas em ordem alfabética decrescente Z-A
+void ordenarMarcasAlfabeticamente(struct Fabricante *fabricantes, int numFabricantes)
+{
+	int i;
+	
+    qsort(fabricantes, numFabricantes, sizeof(struct Fabricante), compararMarcas);
+    printf("\nMarcas em ordem alfabética decrescente Z-A:\n");
+    for (i= 0; i < numFabricantes; i++)
+    {
+        printf("%s\n", fabricantes[i].marca);
+    }
+}
+
 
 int main()
 {
@@ -334,40 +386,40 @@ int main()
     int numFabricantes, numProdutos;
     int i;
 
-    // Obter o nï¿½mero de fabricantes
+    // Obter o número de fabricantes
     do
     {
-        printf("Digite o nï¿½mero de fabricantes (2-%d): ", MAX_FABRICANTES);
+        printf("Digite o número de fabricantes (2-%d): ", MAX_FABRICANTES);
         scanf("%d", &numFabricantes);
         while (getchar() != '\n')
             continue;
     } while (numFabricantes < 1 || numFabricantes > MAX_FABRICANTES);
 
-    // Obter informaï¿½ï¿½es dos fabricantes
+    // Obter informações dos fabricantes
     for (i = 0; i < numFabricantes; i++)
     {
         fabricantes[i] = obterFabricante(i + 1);
     }
 
-    // Obter o nï¿½mero de produtos
+    // Obter o número de produtos
     do
     {
-        printf("\nDigite o nï¿½mero de produtos (5-%d): ", MAX_PRODUTOS);
+        printf("\nDigite o número  de produtos (5-%d): ", MAX_PRODUTOS);
         scanf("%d", &numProdutos);
         while (getchar() != '\n')
             continue;
     } while (numProdutos < 1 || numProdutos > MAX_PRODUTOS);
 
-    // Obter informaï¿½ï¿½es dos produtos
+    // Obter informações dos produtos
     for (i = 0; i < numProdutos; i++)
     {
         produtos[i] = obterProduto(i + 1, fabricantes, numFabricantes);
     }
 
-    // Exibir as informaï¿½ï¿½es dos produtos em formato de tabela
+    // Exibir as informações dos produtos em formato de tabela
     // exibirProdutos(produtos, numProdutos);
 
-    // Exibir o menu e executar a opï¿½ï¿½o selecionada
+    // Exibir o menu e executar a opção selecionada
     exibirMenu(produtos, numProdutos, fabricantes, numFabricantes);
 
     return 0;
